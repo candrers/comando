@@ -1,0 +1,15 @@
+{ "type": "HostToHostIntent",
+  "appId": "org.onosproject.fwd",
+  "priority": 100,
+  "treatment": {
+        "instructions": [
+          {
+            "type": "QUEUE",
+            "queueId": 3
+          }
+        ],
+        "deferred": [] 
+        }, 
+  "one": "AA:A3:41:2E:94:AB/None",	
+  "two": "6E:E3:41:E2:15:02/None"  
+}

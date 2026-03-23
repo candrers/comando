@@ -1,0 +1,47 @@
+----------------------------------------------------------
+ONOS com OpenFlow 
+----------------------------------------------------------
+docker run -it --rm -e ONOS_APPS=gui2,hostprovider,lldpprovider,netcfghostprovider,fwd,ofagent,openflow,openflow-base,openflow-message, -p 8101:8101 onosproject/onos:latest
+
+---------------------------------------------------------
+ONOS com Stratum
+----------------------------------------------------------
+docker run -it --rm -e  ONOS_APPS=gui2,drivers.bmv2,pipelines.basic,hostprovider,netcfglinksprovider,netcfghostprovider, -p 8101:8101 onosproject/onos:2.5.0
+
+---------------------------------------------------------
+Stratum, Mininet-wifi e minindn
+---------------------------------------------------------
+docker run --hostname mininet-wifi --name mininet-wifi --privileged=true --rm -it -v /sys:/sys -v /lib/modules:/lib/modules --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp:/tmp:rw laurodesouza/st-mn-wf-ndn:v2 /bin/bash
+
+--------------------------------------------------------
+ACESSAR ONOS CLI
+-------------------------------------------------------
+./onos onos@172.17.0.2
+------------------------------------------------------
+------------------------------------------------------
+The following example uses the REST API to upload a configuration file:
+------------------------------------------------------
+curl --user onos:rocks -X POST -H "Content-Type: application/json" http://172.17.0.1:8181/onos/v1/network/configuration/ -d @/tmp/cfg.json
+
+onos-netcfg 172.17.0.3 /tmp/cfg.json
+
+./onos-netcfg -P 8181 -u onos -p rocks 172.17.0.3 /tmp/ap1/onos-netcfg.json
+
+onos-netcfg $OC1 /tmp/basic.json /devices/of:0000000000000001/basic
+
+-----------------------------------------------------------
+ACESSAR OS ARQUIVOS DO CONTAINER
+-----------------------------------------------------------
+docker exec -it container-name sh
+-----------------------------------------------------------
+docker run --privileged --rm -it opennetworking/mn-stratum 
+docker run --privileged -v /tmp/mn-stratum:/tmp --rm -it opennetworking/mn-stratum
+docker exec -it opennetworking/mn-stratum bash
+docker exec -it laurodesouza/st-mn-wf-ndnt /bash
+
+sed -i 's/600/110/g' cron_*
+
+ssh root@10.0.0.61 -p numeroporta
+
+
+

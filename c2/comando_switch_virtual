@@ -1,0 +1,47 @@
+ovs-vsctl -- --all destroy QoS -- --all destroy Queue
+.....
+
+ovs-vsctl --\
+ -- set port s100-eth1 qos=@newqos --\
+ -- set port s200-eth1 qos=@newqos --\
+ -- set port s300-eth1 qos=@newqos --\
+ -- set port s400-eth1 qos=@newqos --\
+ --id=@newqos create qos type=linux-htb other-config:max-rate=500000 queues=0=@0,1=@1,2=@2,3=@3 --\
+ --id=@0 create queue other-config:min-rate=100000 other-config:max-rate=200000 --\
+ --id=@1 create queue other-config:min-rate=200000 other-config:max-rate=300000 --\
+ --id=@2 create queue other-config:min-rate=300000 other-config:max-rate=400000 --\
+ --id=@3 create queue other-config:min-rate=400000
+ 
+ovs-vsctl --\
+ -- set port s200-eth1 qos=@newqos --\
+ --id=@newqos create qos type=linux-htb other-config:max-rate=500000 queues=0=@0,1=@1,2=@2,3=@3 --\
+ --id=@0 create queue other-config:min-rate=100000 other-config:max-rate=200000 --\
+ --id=@1 create queue other-config:min-rate=200000 other-config:max-rate=300000 --\
+ --id=@2 create queue other-config:min-rate=300000 other-config:max-rate=400000 --\
+ --id=@3 create queue other-config:min-rate=400000 
+ 
+ 
+curl --user onos:rocks -X POST -H 'Content-Type: application/json' http://172.17.0.2:8181/onos/v1/intents -d @./intentA.json
+  
+..... 
+
+curl --user onos:rocks -X POST -H 'Content-Type: application/json' http://172.17.0.2:8181/onos/v1/intents -d @./intentB.json
+
+....
+
+ { "type": "HostToHostIntent",
+  "appId": "org.onosproject.fwd",
+  "priority": 100,
+  "treatment": {
+        "instructions": [
+          {
+            "type": "QUEUE",
+            "queueId": 3
+          }
+        ],
+        "deferred": [] 
+        }, 
+  "one": "CA:93:C4:1E:F6:B3/None",	
+  "two": "AA:A3:41:2E:94:AB/None"  
+ }
+
